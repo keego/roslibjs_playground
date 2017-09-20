@@ -1,13 +1,21 @@
 <template>
   <div id="app">
+    <NavHeader></NavHeader>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
+import {
+  NavHeader,
+} from '@/components'
+
 export default {
   name: 'app',
-};
+  components: {
+    NavHeader,
+  },
+}
 </script>
 
 <style>

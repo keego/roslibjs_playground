@@ -1,6 +1,6 @@
-# ros_teleop_test
+# roslibjs_playground
 
-> A little teleop action client / server with Vue and roslibjs
+> A little playground to get comfy with roslibjs
 
 ## Build Setup
 
