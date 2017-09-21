@@ -62,6 +62,7 @@ export default {
 }
 
 .vr {
+  display: none; /* optional border */
   width: 1px;
   border: 0;
   background-color: black;

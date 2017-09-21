@@ -1,14 +1,12 @@
 <template>
   <div id="app">
-    <NavHeader></NavHeader>
+    <NavHeader />
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-import {
-  NavHeader,
-} from '@/components'
+import { NavHeader } from '@/components'
 
 export default {
   name: 'app',
@@ -46,6 +44,10 @@ h1, h2 {
 .row {
   display: flex;
   flex-direction: row;
+}
+
+.align-left {
+  text-align: left;
 }
 
 </style>
