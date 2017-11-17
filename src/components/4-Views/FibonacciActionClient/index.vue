@@ -2,8 +2,21 @@
   <section class="align-left">
     <h1>Fibonacci ActionClient Example</h1>
 
-    <input type="text" v-model="url" />
-    <button type="button" v-on:click="connect">connect</button>
+    <div>
+      <label name="url">
+        <legend class="label">Websocket Server Url</legend>
+        <input type="text" v-model="url" />
+      </label>
+      <button type="button" v-on:click="connect">connect</button>
+    </div>
+
+    <div>
+      <label name="goal">
+        <legend class="label">Goal</legend>
+        <input type="text" v-model="goalMessage" />
+        <button type="button" v-on:click="send">send</button>
+      </label>
+    </div>
 
     <div id="statusIndicator">
       <p :style="{ color: status.color || 'black' }">
@@ -13,7 +26,7 @@
 
     <template v-if="status.color !== 'green'">
       <p>
-        Run the following commands in the terminal then refresh this page. Check the JavaScript console for the output.
+        Run the following commands from a local ROS node.
       </p>
 
       <ol>
@@ -21,21 +34,27 @@
       </ol>
     </template>
 
+    <p>
+      Check the JavaScript console for the output.
+    </p>
+
   </section>
 </template>
 
 <script>
-import ROSLIB from 'roslib'
+import Roslib from 'roslib'
 import logger from '@/services/Logger'
 
-const log = logger('FibonacciActionClient')
+const log = logger('Fibonacci Action Client', {
+  infoColor: 'rgba(150, 200, 100, 1)',
+})
 
 export default {
   name: 'FibonacciActionClient',
   mounted() {
     // Connecting to ROS
     // -----------------
-    this.connect()
+    // this.connect()
 
     // If there is an error on the backend, an 'error' emit will be emitted.
     this.ros.on('error', (error) => {
@@ -59,42 +78,44 @@ export default {
       log.info('Connection closed.')
       this.setStatus({
         text: 'Connection closed.',
+        color: 'red',
       })
     })
 
     // The ActionClient
     // ----------------
-    const fibonacciClient = new ROSLIB.ActionClient({
+    this.fibonacciClient = new Roslib.ActionClient({
       ros: this.ros,
       serverName: '/fibonacci',
       actionName: 'actionlib_tutorials/FibonacciAction',
     })
 
     // Create a goal.
-    const goal = new ROSLIB.Goal({
-      actionClient: fibonacciClient,
+    this.goal = new Roslib.Goal({
+      actionClient: this.fibonacciClient,
       goalMessage: {
-        order: 7,
+        order: this.goalMessage,
       },
     })
 
     // Print out their output into the terminal.
-    goal.on('feedback', (feedback) => {
+    this.goal.on('feedback', (feedback) => {
       log.info(`Feedback: ${feedback.sequence}`)
     })
 
-    goal.on('result', (result) => {
+    this.goal.on('result', (result) => {
       log.info(`Final Result: ${result.sequence}`)
     })
-
-    // Send the goal to the action server.
-    goal.send()
   },
   data() {
     return {
-      status: {},
+      goalMessage: 7,
+      status: {
+        text: 'Not connected',
+        color: 'red',
+      },
       url: 'ws://keegs:9090',
-      ros: new ROSLIB.Ros({
+      ros: new Roslib.Ros({
         url: this.url,
       }),
     }
@@ -104,7 +125,12 @@ export default {
       this.ros.connect(this.url)
       this.setStatus({
         text: 'Connecting to rosbridge...',
+        color: 'orange',
       })
+    },
+    send() {
+      // Send the goal to the action server.
+      this.goal.send()
     },
     setStatus(status) {
       this.status = status
@@ -124,7 +150,11 @@ ol {
   padding-left: 1rem;
 }
 
-#statusIndicator {
+legend {
+  margin-top: 0.5rem;
+  padding: 0;
+  text-align: left;
+  font-size: smaller;
 }
 
 </style>
