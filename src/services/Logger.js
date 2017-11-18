@@ -34,6 +34,7 @@ export default function logger(tag, options = {}) {
       console.error(
         `%c[${tag}]`,
         `color: ${options.errorColor || 'rgba(180, 100, 100, 1)'}`,
+        'Error:',
         ...msgs,
       )
     },

@@ -11,26 +11,22 @@
     </div>
 
     <div id="statusIndicator">
-      <p :style="{ color: status.color || 'black' }">
-        Status: {{ status.text }}
+      <p :style="{ color: statusMessage.color || 'black' }">
+        Status: {{ statusMessage.text }}
       </p>
     </div>
 
-    <template v-if="status.color !== 'green'">
-      <p>
-        Run the following commands from a local ROS node.
-      </p>
+    <h2>Steps</h2>
 
-      <ol>
-        <li>
-          <code>roslaunch rosbridge_server rosbridge_websocket.launch</code>
-        </li>
-      </ol>
-    </template>
-
-    <p>
-      Check the JavaScript console for the output.
-    </p>
+    <ol>
+      <li>
+        <span>Run the following command in a terminal:</span>
+        <br />
+        <code>roslaunch rosbridge_server rosbridge_websocket.launch</code>
+      </li>
+      <li>Connect to the Websocket Server</li>
+      <li>Check the JavaScript console for the output</li>
+    </ol>
 
   </section>
 </template>
@@ -48,32 +44,23 @@ export default {
   mounted() {
     // Connecting to ROS
     // -----------------
-    // this.connect()
+    this.setStatus(this.Status.NOT_CONNECTED)
 
     // If there is an error on the backend, an 'error' emit will be emitted.
     this.ros.on('error', (error) => {
-      this.setStatus({
-        text: 'Error in the backend!',
-        color: 'red',
-      })
       log.error(error)
+      this.setStatus(this.Status.ERROR)
     })
 
     // Find out exactly when we made a connection.
     this.ros.on('connection', () => {
       log.info('Connection made!')
-      this.setStatus({
-        text: 'Connected',
-        color: 'green',
-      })
+      this.setStatus(this.Status.CONNECTED)
     })
 
     this.ros.on('close', () => {
       log.info('Connection closed.')
-      this.setStatus({
-        text: 'Connection closed.',
-        color: 'red',
-      })
+      this.setStatus(this.Status.CLOSED)
     })
 
     // The ActionServer
@@ -117,26 +104,61 @@ export default {
   data() {
     return {
       canceled: false,
-      status: {
-        text: 'Not connected',
-        color: 'red',
-      },
-      url: 'ws://keegs:9090',
+      status: {},
+      statusMessage: {},
+      url: 'ws://localhost:9090',
       ros: new Roslib.Ros({
         url: this.url,
       }),
+      Status: {
+        ERROR: 0,
+        NOT_CONNECTED: 1,
+        CONNECTING: 2,
+        CONNECTED: 3,
+        CLOSED: 4,
+      },
     }
   },
   methods: {
     connect() {
       this.ros.connect(this.url)
-      this.setStatus({
-        text: 'Connecting to rosbridge...',
-        color: 'orange',
-      })
+      this.setStatus(this.Status.CONNECTING)
+    },
+    getStatusMessage(status) {
+      const Status = this.Status
+
+      switch (status) {
+        case Status.NOT_CONNECTED: return {
+          text: 'Not connected',
+          color: 'red',
+        }
+        case Status.CONNECTING: return {
+          text: 'Connecting to rosbridge...',
+          color: 'orange',
+        }
+        case Status.CONNECTED: return {
+          text: 'Connected',
+          color: 'green',
+        }
+        case Status.CLOSED: return {
+          text: 'Connection closed.',
+          color: 'red',
+        }
+        case Status.ERROR: return {
+          text: 'Error in the backend!',
+          color: 'red',
+        }
+        default:
+          log.error('unknown status', status)
+          return {
+            text: 'Invalid state',
+            color: 'red',
+          }
+      }
     },
     setStatus(status) {
       this.status = status
+      this.statusMessage = this.getStatusMessage(status)
     },
   },
 }
@@ -150,6 +172,10 @@ h1 {
 ol {
   font-size: small;
   padding-left: 1rem;
+}
+
+li {
+  margin: 0.5rem 0rem;
 }
 
 legend {
