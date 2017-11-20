@@ -1,10 +1,10 @@
 <template>
-  <div class="FibonacciExample">
+  <div class="Custom">
     <div class="outer row">
 
       <div class="column">
         <Card>
-          <FibonacciActionClient />
+          <CustomActionClient />
         </Card>
       </div>
 
@@ -12,29 +12,31 @@
 
       <div class="column">
         <Card>
-          <FibonacciActionServer />
+          <CustomActionServer />
         </Card>
       </div>
+
     </div>
   </div>
 </template>
 
 <script>
 import {
-  FibonacciActionClient,
-  FibonacciActionServer,
+  CustomActionClient,
+  CustomActionServer,
   Card,
 } from '@/components'
 
 export default {
-  name: 'FibonacciExample',
+  name: 'Custom',
   data() {
     return {
+      msg: 'Welcome to Your Vue.js App',
     }
   },
   components: {
-    FibonacciActionClient,
-    FibonacciActionServer,
+    CustomActionClient,
+    CustomActionServer,
     Card,
   },
 }
@@ -42,7 +44,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.FibonacciExample {
+.Custom {
   width: 100%;
   height: 100%;
 }
@@ -52,15 +54,15 @@ export default {
   height: 100%;
 }
 
-.outer > .column {
+.outer > * {
   flex: 1;
 }
 
 .vr {
-  display: none;
+  display: none; /* optional border */
   width: 1px;
   border: 0;
-  background-color: grey;
+  background-color: black;
   flex-grow: 0;
 }
 
@@ -68,4 +70,5 @@ export default {
   margin: 1rem;
   padding: 1rem;
 }
+
 </style>

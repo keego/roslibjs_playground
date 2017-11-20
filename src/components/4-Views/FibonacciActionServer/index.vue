@@ -17,7 +17,7 @@
     </div>
 
     <h2>Steps</h2>
-
+    <em>Note: Check the JavaScript console for output</em>
     <ol>
       <li>
         <span>Run the following command in a terminal:</span>
@@ -25,7 +25,6 @@
         <code>roslaunch rosbridge_server rosbridge_websocket.launch</code>
       </li>
       <li>Connect to the Websocket Server</li>
-      <li>Check the JavaScript console for the output</li>
     </ol>
 
   </section>
@@ -165,9 +164,6 @@ export default {
 </script>
 
 <style scoped>
-h1 {
-  margin-top: 0;
-}
 
 ol {
   font-size: small;

@@ -1,22 +1,18 @@
 <template>
-  <div class="Dashboard">
+  <div class="Fibonacci">
     <div class="outer row">
 
       <div class="column">
-        <h1>Action Client</h1>
-
         <Card>
-          <ActionClient></ActionClient>
+          <FibonacciActionClient />
         </Card>
       </div>
 
       <div class="vr" />
 
       <div class="column">
-        <h1>Action Server</h1>
-
         <Card>
-          <ActionServer />
+          <FibonacciActionServer />
         </Card>
       </div>
     </div>
@@ -25,21 +21,20 @@
 
 <script>
 import {
-  ActionClient,
-  ActionServer,
+  FibonacciActionClient,
+  FibonacciActionServer,
   Card,
 } from '@/components'
 
 export default {
-  name: 'Dashboard',
+  name: 'Fibonacci',
   data() {
     return {
-      msg: 'Welcome to Your Vue.js App',
     }
   },
   components: {
-    ActionClient,
-    ActionServer,
+    FibonacciActionClient,
+    FibonacciActionServer,
     Card,
   },
 }
@@ -47,7 +42,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.Dashboard {
+.Fibonacci {
   width: 100%;
   height: 100%;
 }
@@ -57,20 +52,20 @@ export default {
   height: 100%;
 }
 
-.outer > * {
-  flex-grow: 1;
+.outer > .column {
+  flex: 1;
 }
 
 .vr {
-  display: none; /* optional border */
+  display: none;
   width: 1px;
   border: 0;
-  background-color: black;
+  background-color: grey;
   flex-grow: 0;
 }
 
 .Card {
-  border: 1px solid red;
+  margin: 1rem;
+  padding: 1rem;
 }
-
 </style>

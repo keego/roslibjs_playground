@@ -12,7 +12,7 @@ export default [
   {
     path: '/',
     name: 'home',
-    component: pages.Dashboard, // homepage
+    component: pages.Fibonacci, // homepage
   },
   ...pageRoutes,
 ]

@@ -22,6 +22,7 @@ html, body, #app {
   height: 100%;
   margin: 0;
   padding: 0;
+  font-size: small;
 }
 
 #app {
@@ -36,6 +37,22 @@ h1, h2 {
   font-weight: normal;
 }
 
+h1 {
+  font-size: 1.75rem;
+}
+
+h2 {
+  font-size: 1.25rem;
+}
+
+section > *:first-child {
+  margin-top: 0;
+}
+
+pre {
+  font-size: smaller;
+}
+
 .column {
   display: flex;
   flex-direction: column;
@@ -48,6 +65,10 @@ h1, h2 {
 
 .align-left {
   text-align: left;
+}
+
+.row.align-bottom {
+  align-items: flex-end;
 }
 
 </style>
