@@ -2,6 +2,8 @@
 
 > A little playground to get comfy with roslibjs
 
+![Fibonacci Example](./demo.gif?raw=true)
+
 ## Build Setup
 
 ``` bash
